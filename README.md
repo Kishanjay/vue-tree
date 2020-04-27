@@ -1,5 +1,19 @@
 # vue-tree
 
+Renders a pure HTML tree based on tree-data
+
+```javascript
+const treeData = {
+  ...
+  children: [
+    {
+      ...
+      children: [...]
+    }
+  ]
+}
+```
+
 ## Project setup
 ```
 yarn install

@@ -1,29 +1,67 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <vue-tree
+      v-slot:default="node"
+      :data="tree"
+    >
+      <div class="node">
+        <h1>Node: {{ node.value }}</h1>
+        <h2>subtitle</h2>
+        <img
+          src="http://placehold.it/64x64"
+          alt=""
+        >
+      </div>
+    </vue-tree>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+import VueTree from './components/VueTree.vue';
 
 export default Vue.extend({
   name: 'App',
   components: {
-    HelloWorld,
+    VueTree,
+  },
+  data() {
+    return {
+      tree: {
+        value: 'a',
+        children: [
+          { value: 'b' },
+          {
+            value: 'c',
+            children: [
+              { value: 'b' },
+              {
+                value: 'c',
+                children: [
+                  { value: 'b' },
+                  { value: 'd' },
+                  { value: 'f' },
+                  { value: 'c' }],
+
+              }],
+          }],
+      },
+    };
   },
 });
 </script>
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  min-width: 100vw;
+  min-height: 100vh;
+  position: relative;
+}
+
+.node {
+  padding: 16px;
+  border: 1px solid black;
+
+  border-radius: 4px;
 }
 </style>
