@@ -3,6 +3,8 @@
     <vue-tree
       v-slot:default="node"
       :data="tree"
+      :line-width="6"
+      :node-spacing="24"
     >
       <div class="node">
         <h1>Node: {{ node.value }}</h1>
@@ -30,21 +32,14 @@ export default Vue.extend({
       tree: {
         value: 'a',
         children: [
-          { value: 'b' },
           {
-            value: 'c',
+            value: 'b',
             children: [
               { value: 'b' },
-              {
-                value: 'c',
-                children: [
-                  { value: 'b' },
-                  { value: 'd' },
-                  { value: 'f' },
-                  { value: 'c' }],
-
-              }],
-          }],
+              { value: 'b' },
+            ],
+          },
+        ],
       },
     };
   },
@@ -60,7 +55,7 @@ export default Vue.extend({
 
 .node {
   padding: 16px;
-  border: 1px solid black;
+  border: 5px solid black;
 
   border-radius: 4px;
 }

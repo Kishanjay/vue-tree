@@ -3,7 +3,10 @@
     ref="rootTree"
     class="tree-branch"
   >
-    <div class="tree-branch__parent">
+    <div
+      class="tree-branch__parent"
+      :style="{margin: nodeSpacing+'px'}"
+    >
       <slot v-bind="data">
         {{ data.value }}
       </slot>
@@ -13,13 +16,13 @@
       class="tree-branch__children"
     >
       <template
-        v-for="child of data.children"
+        v-for="(child, index) of data.children"
       >
         <vue-tree
           ref="subTreeComponents"
+          :key="index"
           v-slot:default="childData"
-          :key="child.value"
-          v-bind="$attrs"
+          v-bind="{...$attrs, ...$props}"
           :data="child"
         >
           <slot v-bind="childData">
@@ -34,6 +37,10 @@
 import Vue from 'vue';
 import VueTreeLine from './VueTreeLine.vue';
 
+export interface Tree {
+  children: [Tree];
+}
+
 export default Vue.extend({
   name: 'VueTree',
   inheritAttrs: false,
@@ -41,6 +48,27 @@ export default Vue.extend({
     data: {
       type: Object,
       required: true,
+    },
+    lineColor: {
+      type: String,
+      required: false,
+      default() {
+        return 'black';
+      },
+    },
+    lineWidth: {
+      type: Number,
+      required: false,
+      default() {
+        return 2;
+      },
+    },
+    nodeSpacing: {
+      type: Number,
+      required: false,
+      default() {
+        return 16;
+      },
     },
   },
   mounted() {
@@ -108,8 +136,8 @@ export default Vue.extend({
             xOffset: sourceOffset.offsetLeft + sourceOffset.offsetWidth / 2,
             yOffset: sourceOffset.offsetTop + sourceOffset.offsetHeight, // bottom of source element
           },
-          lineColor: 'blue',
-          lineWidth: 2,
+          lineColor: this.lineColor,
+          lineWidth: this.lineWidth,
         },
       });
 
@@ -129,11 +157,13 @@ export default Vue.extend({
 
   align-items: center;
   position: relative;
+  box-sizing: border-box;
 }
 
 .tree-branch__parent {
   position: relative;
   margin: 16px;
+  box-sizing: border-box;
 }
 .tree-branch__children {
   display: flex;
